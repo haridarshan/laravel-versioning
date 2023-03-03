@@ -1,0 +1,126 @@
+<?php
+
+namespace Haridarshan\Laravel\ApiVersioning\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Str;
+use Nwidart\Modules\Support\Stub;
+use Symfony\Component\Console\Attribute\AsCommand;
+
+#[AsCommand(name: 'module:bootstrap')]
+class BootstrapMakeCommand extends Command
+{
+    /**
+     * The command name.
+     *
+     * @var string
+     */
+    protected $name = 'module:bootstrap';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create a new bootstrap file for the specified module.';
+
+    /**
+     * @return int
+     */
+    public function handle(): int
+    {
+        $code = $this->generateFiles();
+
+        if ($code === E_ERROR) {
+            return E_ERROR;
+        }
+
+        return $code;
+    }
+
+    /**
+     * Generate the files.
+     *
+     * @return int
+     */
+    public function generateFiles(): int
+    {
+        foreach ($this->getFiles() as $stub => $file) {
+            $modules = $this->laravel['modules']->all();
+            foreach ($modules as $module) {
+                $path = $module->getPath() . '/' . $file;
+                $this->components->task("Generating file $path", function () use ($stub, $path) {
+                    if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
+                        $this->laravel['files']->makeDirectory($dir, 0775, true);
+                    }
+
+                    $this->laravel['files']->put($path, $this->getStubContents($stub));
+                });
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get the list of files that will be created.
+     *
+     * @return array
+     */
+    public function getFiles(): array
+    {
+        return config('api.stubs.files');
+    }
+
+    /**
+     * Get the contents of the specified stub file by given stub name.
+     *
+     * @param $stubFile
+     *
+     * @return string
+     */
+    protected function getStubContents($stubFile): string
+    {
+        $stub = Stub::create(
+            '/' . $stubFile . '.stub',
+            $this->getReplacement($stubFile)
+        );
+        $stub::setBasePath(config('api.stubs.path'));
+        return $stub->render();
+    }
+
+    /**
+     * Get array replacement for the specified stub.
+     *
+     * @param $stub
+     *
+     * @return array
+     */
+    protected function getReplacement($stub): array
+    {
+        $replacements = config('api.stubs.replacements');
+
+        if (!isset($replacements[$stub])) {
+            return [];
+        }
+
+        $keys = $replacements[$stub];
+
+        $replaces = [];
+
+        if ($stub === 'json' || $stub === 'composer') {
+            if (in_array('PROVIDER_NAMESPACE', $keys, true) === false) {
+                $keys[] = 'PROVIDER_NAMESPACE';
+            }
+        }
+        foreach ($keys as $key) {
+            if (method_exists($this, $method = 'get' . ucfirst(Str::studly(strtolower($key))) . 'Replacement')) {
+                $replaces[$key] = $this->$method();
+            } else {
+                $replaces[$key] = null;
+            }
+        }
+
+        return $replaces;
+    }
+}
