@@ -12,8 +12,7 @@ $rules = [
 $finder = Finder::create()
     ->in(__DIR__)
     ->exclude([
-        'vendor',
-        'tests/Commands/__snapshots__',
+        'vendor'
     ])
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
