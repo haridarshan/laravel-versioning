@@ -1,0 +1,51 @@
+{
+  "name": "haridarshan/laravel-api-versioning",
+  "description": "Versioning of custom apis in Laravel with version specific dependencies",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hari Darshan Gorana",
+      "email": "er.haridarshan@gmail.com"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "jetmedianetwork/php-project-base-library",
+      "type": "vcs",
+      "url": "https://github.com/jetmedianetwork/php-project-base-library"
+    },
+    {
+      "name": "jetmedianetwork/jetstream-php-library",
+      "type": "vcs",
+      "url": "https://github.com/jetmedianetwork/jetstream-php-library"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "nwidart/laravel-modules": "^10.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.6",
+    "laravel/framework": "^10.0",
+    "jetmedianetwork/php-project-base-library": "2.x-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Haridarshan\\Laravel\\ApiVersioning\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Nwidart\\Modules\\LaravelModulesServiceProvider",
+        "Haridarshan\\Laravel\\ApiVersioning\\ApiVersionServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "pcf": "vendor/bin/php-cs-fixer fix --verbose"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
