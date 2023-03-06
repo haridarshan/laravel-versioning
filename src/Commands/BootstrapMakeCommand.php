@@ -4,12 +4,19 @@ namespace Haridarshan\Laravel\ApiVersioning\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Nwidart\Modules\Module;
 use Nwidart\Modules\Support\Stub;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 #[AsCommand(name: 'module:bootstrap')]
 class BootstrapMakeCommand extends Command
 {
+    /**
+     * @var string
+     */
+    protected string $argumentName = 'module';
+
     /**
      * The command name.
      *
@@ -29,34 +36,44 @@ class BootstrapMakeCommand extends Command
      */
     public function handle(): int
     {
-        $code = $this->generateFiles();
-
-        if ($code === E_ERROR) {
-            return E_ERROR;
+        $modules = $this->argument('module');
+        if (empty($modules)) {
+            $modules = $this->laravel['modules']->all();
         }
 
-        return $code;
+        $success = true;
+        foreach ($modules as $module) {
+            if (!$module instanceof Module) {
+                $module = $this->laravel['modules']->findOrFail(Str::studly($module));
+            }
+            $code = $this->generateFiles($module);
+
+            if ($code === E_ERROR) {
+                $success = false;
+            }
+        }
+
+        return $success ? 0 : E_ERROR;
     }
 
     /**
      * Generate the files.
      *
+     * @param Module $module
+     *
      * @return int
      */
-    public function generateFiles(): int
+    public function generateFiles(Module $module): int
     {
         foreach ($this->getFiles() as $stub => $file) {
-            $modules = $this->laravel['modules']->all();
-            foreach ($modules as $module) {
-                $path = $module->getPath() . '/' . $file;
-                $this->components->task("Generating file $path", function () use ($stub, $path) {
-                    if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
-                        $this->laravel['files']->makeDirectory($dir, 0775, true);
-                    }
+            $path = $module->getPath() . '/' . $file;
+            $this->components->task("Generating file $path", function () use ($stub, $path) {
+                if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
+                    $this->laravel['files']->makeDirectory($dir, 0775, true);
+                }
 
-                    $this->laravel['files']->put($path, $this->getStubContents($stub));
-                });
-            }
+                $this->laravel['files']->put($path, $this->getStubContents($stub));
+            });
         }
 
         return 0;
@@ -122,5 +139,17 @@ class BootstrapMakeCommand extends Command
         }
 
         return $replaces;
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['module', InputArgument::IS_ARRAY, 'The name of module will be used.'],
+        ];
     }
 }

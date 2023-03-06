@@ -3,7 +3,6 @@
 namespace Haridarshan\Laravel\ApiVersioning\Providers;
 
 use Nwidart\Modules\Providers\ConsoleServiceProvider as NwidartConsoleServiceProvider;
-use Haridarshan\Laravel\ApiVersioning\Commands;
 
 class ConsoleServiceProvider extends NwidartConsoleServiceProvider
 {
@@ -14,13 +13,6 @@ class ConsoleServiceProvider extends NwidartConsoleServiceProvider
         $this->commands(
             config('api.commands.register')
         );
-
-//        foreach (config('api.commands.override') as $signature => $commandClass) {
-//            //$signature = str_replace(':', '.', $signature);
-//            $this->app->extend($signature, function () use ($commandClass) {
-//                return new $commandClass();
-//            });
-//        }
     }
 
     /**

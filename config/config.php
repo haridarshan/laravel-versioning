@@ -31,7 +31,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you can define which commands will be visible and used in your
-    | application. If for example you don't use some of the commands provided
+    | application. If for example you don't use some commands provided
     | you can simply comment them out.
     |
     */
@@ -39,12 +39,21 @@ return [
         'register' => [
             Commands\BootstrapMakeCommand::class,
             Commands\RouteProviderUpdateCommand::class,
+            Commands\ModuleMakeWithVersion::class,
         ],
         'override' => [
 
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Module Stubs
+    |--------------------------------------------------------------------------
+    |
+    | Add/Update module stubs.
+    |
+    */
     'stubs' => [
         'enabled' => false,
         'path' => base_path('vendor/haridarshan/laravel-api-versioning/src/Commands/stubs'),

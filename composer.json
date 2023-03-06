@@ -43,9 +43,6 @@
       ]
     }
   },
-  "scripts": {
-    "pcf": "vendor/bin/php-cs-fixer fix --verbose"
-  },
   "minimum-stability": "dev",
   "prefer-stable": true
 }

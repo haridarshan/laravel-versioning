@@ -3,19 +3,24 @@
 namespace Haridarshan\Laravel\ApiVersioning\Commands;
 
 use Illuminate\Console\Command;
-use Nwidart\Modules\Exceptions\FileAlreadyExistException;
+use Illuminate\Support\Str;
 use Nwidart\Modules\Generators\FileGenerator;
 use Nwidart\Modules\Module;
 use Nwidart\Modules\Support\Config\GeneratorPath;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 #[AsCommand(name: 'module:update:route-provider')]
 class RouteProviderUpdateCommand extends Command
 {
     use ModuleCommandTrait;
+
+    /**
+     * @var string
+     */
+    protected string $argumentName = 'module';
 
     /**
      * The command name.
@@ -36,54 +41,41 @@ class RouteProviderUpdateCommand extends Command
      */
     public function handle(): int
     {
-        $modules = $this->laravel['modules']->all();
-        $success = true;
+        $modules = $this->argument('module');
+        if (empty($modules)) {
+            $modules = $this->laravel['modules']->all();
+        }
+
         foreach ($modules as $module) {
-            $moduleName = $module->getName();
-            $path = str_replace('\\', '/', $this->getDestinationFilePath($moduleName));
+            if (!$module instanceof Module) {
+                $module = $this->laravel['modules']->findOrFail(Str::studly($module));
+            }
+
+            $path = str_replace('\\', '/', $this->getDestinationFilePath($module));
 
             if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
                 $this->laravel['files']->makeDirectory($dir, 0777, true);
             }
 
-            $contents = $this->getTemplateContents($moduleName);
+            $contents = $this->getTemplateContents($module);
 
-            try {
-                $this->components->task("Generating file {$path}", function () use ($path, $contents) {
-                    $overwriteFile = $this->hasOption('force') ? $this->option('force') : false;
-
-                    (new FileGenerator($path, $contents))->withFileOverwrite($overwriteFile)->generate();
-                });
-            } catch (FileAlreadyExistException $e) {
-                $this->components->error("File : {$path} already exists.");
-                $success = false;
-            }
+            $this->components->task("Generating file $path", function () use ($path, $contents) {
+                (new FileGenerator($path, $contents))->withFileOverwrite(true)->generate();
+            });
         }
 
-        return $success ? 0 : E_ERROR;
-    }
-
-    /**
-     * @return array[]
-     */
-    protected function getOptions(): array
-    {
-        return [
-            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when the file already exists.'],
-        ];
+        return 0;
     }
 
     /**
      * Get template contents.
      *
-     * @param string $moduleName
+     * @param Module $module
      *
      * @return string
      */
-    protected function getTemplateContents(string $moduleName): string
+    protected function getTemplateContents(Module $module): string
     {
-        $module = $this->laravel['modules']->findOrFail($moduleName);
-
         $stub = Stub::create(
             '/route-provider.stub',
             [
@@ -113,17 +105,18 @@ class RouteProviderUpdateCommand extends Command
     /**
      * Get the destination file path.
      *
-     * @param string $moduleName
+     * @param Module $module
      *
      * @return string
      */
-    protected function getDestinationFilePath(string $moduleName): string
+    protected function getDestinationFilePath(Module $module): string
     {
-        $path = $this->laravel['modules']->getModulePath($moduleName);
+        //$path = $this->laravel['modules']->getModulePath($moduleName);
+        $path = $module->getPath();
 
         $generatorPath = new GeneratorPath(config("api.paths.generator.provider"));
 
-        return $path . $generatorPath->getPath() . '/' . $this->getFileName() . '.php';
+        return $path . '/' . $generatorPath->getPath() . '/' . $this->getFileName() . '.php';
     }
 
     /**
@@ -212,5 +205,17 @@ class RouteProviderUpdateCommand extends Command
         $namespace = str_replace('/', '\\', $namespace);
 
         return trim($namespace, '\\');
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments(): array
+    {
+        return [
+            ['module', InputArgument::IS_ARRAY, 'The name of module will be used.'],
+        ];
     }
 }

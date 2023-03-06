@@ -4,35 +4,29 @@ namespace Haridarshan\Laravel\ApiVersioning;
 
 use Haridarshan\Laravel\ApiVersioning\Providers\ConsoleServiceProvider;
 use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
-use Nwidart\Modules\Exceptions\ModuleNotFoundException;
+use Nwidart\Modules\LaravelModulesServiceProvider;
 
-class ApiVersionServiceProvider extends ServiceProvider
+class ApiVersionServiceProvider extends LaravelModulesServiceProvider
 {
     /**
      * Bootstrap the package's services.
      *
      * @return void
-     * @throws ModuleNotFoundException
      */
     public function boot(): void
     {
-        if (config('modules') === null) {
-            throw new ModuleNotFoundException(
-                "Run 'php artisan vendor:publish --provider=\"Nwidart\Modules\LaravelModulesServiceProvider\"' first"
-            );
-        }
+        parent::boot();
 
         $configPath = __DIR__ . '/../config/config.php';
         $stubsPath = dirname(__DIR__) . '/src/Commands/stubs';
 
         $this->publishes([
             $configPath => config_path('api.php'),
-        ], 'config');
+        ], 'api');
 
         $this->publishes([
             $stubsPath => base_path('stubs/api-stubs'),
-        ], 'stubs');
+        ], 'api-stubs');
 
         $this->registerMiddlewareAliases();
     }
@@ -41,15 +35,10 @@ class ApiVersionServiceProvider extends ServiceProvider
      * Register the package's services.
      *
      * @return void
-     * @throws ModuleNotFoundException
      */
     public function register(): void
     {
-        if (config('modules') === null) {
-            throw new ModuleNotFoundException(
-                "Run 'php artisan vendor:publish --provider=\"Nwidart\Modules\LaravelModulesServiceProvider\"' first"
-            );
-        }
+        parent::register();
 
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'api');
         $this->registerProviders();
