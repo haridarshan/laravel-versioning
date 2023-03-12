@@ -1,6 +1,6 @@
 {
   "name": "haridarshan/laravel-api-versioning",
-  "description": "Versioning of custom apis in Laravel with version specific dependencies",
+  "description": "Manage module specific dependencies in Laravel using nWidart/laravel-modules",
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -9,26 +9,13 @@
       "email": "er.haridarshan@gmail.com"
     }
   ],
-  "repositories": [
-    {
-      "name": "jetmedianetwork/php-project-base-library",
-      "type": "vcs",
-      "url": "https://github.com/jetmedianetwork/php-project-base-library"
-    },
-    {
-      "name": "jetmedianetwork/jetstream-php-library",
-      "type": "vcs",
-      "url": "https://github.com/jetmedianetwork/jetstream-php-library"
-    }
-  ],
   "require": {
     "php": ">=8.1",
     "nwidart/laravel-modules": "^10.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.6",
-    "laravel/framework": "^10.0",
-    "jetmedianetwork/php-project-base-library": "2.x-dev"
+    "laravel/framework": "^10.0"
   },
   "autoload": {
     "psr-4": {
@@ -43,6 +30,6 @@
       ]
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }
