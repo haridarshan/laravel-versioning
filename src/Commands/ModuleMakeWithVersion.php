@@ -6,9 +6,7 @@ use Haridarshan\Laravel\ApiVersioning\Json;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Commands\ModuleMakeCommand;
-use Nwidart\Modules\Laravel\Module;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Throwable;
 
 #[AsCommand(name: 'module:make:version')]
 class ModuleMakeWithVersion extends ModuleMakeCommand
