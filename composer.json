@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": ">=8.1",
+    "php": "^8.1",
     "nwidart/laravel-modules": "^10.0"
   },
   "require-dev": {
@@ -25,7 +25,9 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Nwidart\\Modules\\LaravelModulesServiceProvider",
+        "Nwidart\\Modules\\LaravelModulesServiceProvider"
+      ],
+      "dont-discover": [
         "Haridarshan\\Laravel\\ApiVersioning\\ApiVersionServiceProvider"
       ]
     }
