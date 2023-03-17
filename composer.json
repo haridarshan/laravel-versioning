@@ -25,9 +25,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Nwidart\\Modules\\LaravelModulesServiceProvider"
-      ],
-      "dont-discover": [
+        "Nwidart\\Modules\\LaravelModulesServiceProvider",
         "Haridarshan\\Laravel\\ApiVersioning\\ApiVersionServiceProvider"
       ]
     }
