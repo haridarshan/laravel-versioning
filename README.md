@@ -1,8 +1,8 @@
 # laravel-modules wise composer dependencies
 
-Manage module specific composer dependencies in Laravel using nWidart/laravel-modules
+Manage module specific composer dependencies for Api Modules in Laravel using nWidart/laravel-modules
 
-`laravel-api-versioning` is extended from `nWidart/laravel-modules` to add support for module-wise composer-based
+`laravel-modules-composer-deps` is extended from `nWidart/laravel-modules` to add support for module-wise composer-based
 dependencies specifically for `--api` modules where developer may need to have different versions of same dependency for
 specific module.
 
@@ -11,13 +11,13 @@ specific module.
 1. Via [Composer](https://getcomposer.org/).
 
     ```php
-    composer require haridarshan/laravel-api-versioning
+    composer require haridarshan/laravel-modules-composer-deps
     ```
 
 2. Publish the config (Optional)
 
     ```php
-    php artisan vendor:publish --provider="Haridarshan\Laravel\ApiVersioning\ApiVersionServiceProvider"
+    php artisan vendor:publish --provider="Haridarshan\Laravel\NwidartModules\NwidartModulesServiceProvider"
     ```
 
    This will automatically publish configuration of `nWidart/laravel-modules` as well.
