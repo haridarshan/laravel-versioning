@@ -25,7 +25,6 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Nwidart\\Modules\\LaravelModulesServiceProvider",
         "Haridarshan\\Laravel\\NwidartModules\\NwidartModulesServiceProvider"
       ]
     }
