@@ -1,7 +1,7 @@
 <?php
 
-use Haridarshan\Laravel\ApiVersioning\Commands;
-use Haridarshan\Laravel\ApiVersioning\Middleware\ApiVersion;
+use Haridarshan\Laravel\NwidartModules\Commands;
+use Haridarshan\Laravel\NwidartModules\Middleware\ApiVersion;
 
 return [
 
