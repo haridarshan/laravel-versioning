@@ -1,9 +1,9 @@
 <?php
 
-namespace Haridarshan\Laravel\ApiVersioning\Providers;
+namespace Haridarshan\Laravel\NwidartModules\Providers;
 
 use Nwidart\Modules\Providers\ConsoleServiceProvider as NwidartConsoleServiceProvider;
-use Haridarshan\Laravel\ApiVersioning\Commands;
+use Haridarshan\Laravel\NwidartModules\Commands;
 
 class ConsoleServiceProvider extends NwidartConsoleServiceProvider
 {

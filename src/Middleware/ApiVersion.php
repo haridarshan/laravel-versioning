@@ -1,6 +1,6 @@
 <?php
 
-namespace Haridarshan\Laravel\ApiVersioning\Middleware;
+namespace Haridarshan\Laravel\NwidartModules\Middleware;
 
 use Closure;
 use Illuminate\Http\JsonResponse;
@@ -23,7 +23,7 @@ class ApiVersion
      */
     public function handle(Request $request, Closure $next, $guard = null): Response|JsonResponse|RedirectResponse
     {
-        if (! is_null($guard)) {
+        if (!is_null($guard)) {
             config(['api.version' => $guard]);
 
             $path = module_path($guard);

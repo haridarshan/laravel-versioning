@@ -1,12 +1,12 @@
 <?php
 
-namespace Haridarshan\Laravel\ApiVersioning;
+namespace Haridarshan\Laravel\NwidartModules;
 
-use Haridarshan\Laravel\ApiVersioning\Providers\ConsoleServiceProvider;
+use Haridarshan\Laravel\NwidartModules\Providers\ConsoleServiceProvider;
 use Illuminate\Routing\Router;
 use Nwidart\Modules\LaravelModulesServiceProvider;
 
-class ApiVersionServiceProvider extends LaravelModulesServiceProvider
+class NwidartModulesServiceProvider extends LaravelModulesServiceProvider
 {
     /**
      * Bootstrap the package's services.

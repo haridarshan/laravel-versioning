@@ -1,6 +1,6 @@
 <?php
 
-namespace Haridarshan\Laravel\ApiVersioning\Commands;
+namespace Haridarshan\Laravel\NwidartModules\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

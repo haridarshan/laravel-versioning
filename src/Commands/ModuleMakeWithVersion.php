@@ -1,8 +1,8 @@
 <?php
 
-namespace Haridarshan\Laravel\ApiVersioning\Commands;
+namespace Haridarshan\Laravel\NwidartModules\Commands;
 
-use Haridarshan\Laravel\ApiVersioning\Json;
+use Haridarshan\Laravel\NwidartModules\Json;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Commands\ModuleMakeCommand;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Haridarshan\Laravel\ApiVersioning;
+namespace Haridarshan\Laravel\NwidartModules;
 
 use Nwidart\Modules\Json as NwidartJson;
 
