@@ -48,7 +48,7 @@ return [
     */
     'stubs' => [
         'enabled' => false,
-        'path' => base_path('vendor/haridarshan/laravel-api-versioning/src/Commands/stubs'),
+        'path' => base_path('vendor/haridarshan/laravel-modules-composer-deps/src/Commands/stubs'),
         'files' => [
             'bootstrap' => 'bootstrap.php',
         ],
